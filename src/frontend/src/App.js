@@ -47,7 +47,7 @@ const TheAvatar = ({name}) => {
 }
 
 const removeStudent = (studentId, callback) => {
-    deleteStudent(7889798).then(() => {
+    deleteStudent(studentId).then(() => {
         successNotification("Student deleted", `Student with ${studentId} was deleted`);
         callback();
     }).catch(err => {
@@ -142,7 +142,10 @@ function App() {
             return <Spin indicator={antIcon}/>
         }
         if (students.length <= 0) {
-            return <Empty/>;
+            return <>
+
+                <Empty/>
+                </>
         }
         return <>
             <StudentDrawerForm
