@@ -48,7 +48,7 @@ const TheAvatar = ({name}) => {
 
 const removeStudent = (studentId, callback) => {
     deleteStudent(studentId).then(() => {
-        successNotification( "Student deleted", `Student with ${studentId} was deleted`);
+        successNotification("Student deleted", `Student with ${studentId} was deleted`);
         callback();
     });
 }
@@ -113,8 +113,16 @@ function App() {
             .then(data => {
                 console.log(data);
                 setStudents(data);
-                setFetching(false);
-            })
+            }).catch(err => {
+                console.log(err.response)
+                err.response.json().then(res => {
+                    console.log(res);
+                    errorNotification(
+                        "There was an issue",
+                        `${res.message} [${res.status}] [${res.error}]`
+                    )
+                });
+            }).finally(() => setFetching(false))
 
     useEffect(() => {
         console.log("component is mounted");

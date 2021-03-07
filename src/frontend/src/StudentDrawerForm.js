@@ -28,7 +28,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
                 console.log(err)
             }).finally(() => {
                 setSubmitting(false);
-        })
+            })
     };
 
     const onFinishFailed = errorInfo => {
