@@ -29,10 +29,30 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 1.15
+      - name: Setup PostgreSQL
+        uses: Harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863
+        with:
+          # Version of PostgreSQL to use
+          postgresql version: 13.1
+          # POSTGRES_DB - name for the default database that is created
+          postgresql db: amigoscode 
+          # POSTGRES_USER - create the specified user with superuser power
+          postgresql user: amigoscode
+          # POSTGRES_PASSWORD - superuser password
+          postgresql password: password
+      
+      # Step that does that actual cache save and restore
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+        
       
       - name: Maven Clean Package
         run: |
-          ./mvnw clean package -P build-frontend
+          ./mvnw clean package -P build-frontend >> /dev/null
       
       
           
