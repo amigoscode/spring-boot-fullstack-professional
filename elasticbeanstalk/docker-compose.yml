@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  backend:
+    image: "amigoscode/springboot-react-fullstack:3"
+    ports:
+      - "80:8080"
+    restart: "always"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
