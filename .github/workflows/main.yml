@@ -52,7 +52,7 @@ jobs:
       
       - name: Maven Clean Package
         run: |
-          ./mvnw clean package -P build-frontend >> /dev/null
+          ./mvnw clean package -P build-frontend
       
       
           
