@@ -51,6 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
+    - uses: actions/checkout@v2
     - name: Build Number
       id: build-number
       run: echo "::set-output name=BUILD_NUMBER::$(date '+%-d.%-m.%Y.%-H.%-M.%-S')"
