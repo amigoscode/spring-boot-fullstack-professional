@@ -49,9 +49,8 @@ jobs:
 #         run: |
 #           ./mvnw clean package -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
       - name: Commit dev docker-compose.yaml
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
-          echo ${{ github.ref }}
           date > generated.txt
           git config user.name github-actions
           git config user.email github-actions@github.com
