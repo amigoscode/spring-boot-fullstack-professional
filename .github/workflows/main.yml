@@ -70,7 +70,7 @@ jobs:
           git push
 
       - name: Zip elasticbeanstalk/docker-compose.yml
-      - run: zip deploy.zip elasticbeanstalk/docker-compose.yml
+        run: zip deploy.zip elasticbeanstalk/docker-compose.yml
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408
         with:
