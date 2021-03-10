@@ -52,9 +52,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
           sed -i -E 's_(amigoscode/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}\2'_' elasticbeanstalk/docker-compose.yml
-          echo "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add elasticbeanstalk/docker-compose.yml
