@@ -51,7 +51,7 @@ jobs:
       - name: Commit dev docker-compose.yaml
         if: github.ref == 'refs/heads/main'
         run: |
-          sed -i -E 's_(amigoscode/springboot-react-fullstack:)(.*)_\1"${{steps.build-number.outputs.BUILD_NUMBER}}"_' elasticbeanstalk/docker-compose.yml
+          sed -i -E 's_(amigoscode/springboot-react-fullstack:)(.*)_\1'"${{steps.build-number.outputs.BUILD_NUMBER}}"'_' elasticbeanstalk/docker-compose.yml
           cat elasticbeanstalk/docker-compose.yml
       
       
