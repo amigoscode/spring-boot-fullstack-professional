@@ -77,8 +77,8 @@ jobs:
           aws_access_key: ${{secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{secrets.AWS_SECRET_ACCESS_KEY }}
           region: eu-west-1
-          application_name: Springbootreactfullstack-env
-          environment_name: springboot-react-fullstack
+          environment_name: Springbootreactfullstack-env
+          application_name: springboot-react-fullstack
           deployment_package: deploy.zip
           version_label: ${{steps.build-number.outputs.BUILD_NUMBER}}
           version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions
