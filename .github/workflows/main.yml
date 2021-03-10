@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -14,75 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-#       - name: Setup Java JDK
-#         uses: actions/setup-java@v1.4.3
-#         with:
-#           java-version: 1.15
-#       - name: Setup PostgreSQL
-#         uses: Harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863
-#         with:
-#           postgresql version: 13.1
-#           postgresql db: amigoscode 
-#           postgresql user: postgres
-#           postgresql password: password      
-#       - name: Cache
-#         uses: actions/cache@v2.1.4
-#         with:
-#           # A list of files, directories, and wildcard patterns to cache and restore
-#           path: ~/.m2/repository
-#           # An explicit key for restoring and saving the cache
-#           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-#           # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-#           restore-keys: ${{ runner.os }}-maven-
-          
-#       - name: Docker Login
-#         uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a
-#         with:
-#           username: amigoscode
-#           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-   
-        
-#       - name: Maven Clean Package
-#         run: |
-#           ./mvnw clean package -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
-
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build Number
-        id: build-number
-        run: echo "::set-output name=BUILD_NUMBER::$(date '+%-d.%-m.%Y.%-H.%-M.%-S')"
-
-      - name: Commit dev docker-compose.yaml
-        if: github.ref == 'refs/heads/main'
-        run: |
-          BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
-          sed -i -E 's_(amigoscode/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}\2'_' elasticbeanstalk/docker-compose.yml
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add elasticbeanstalk/docker-compose.yml
-          git commit -m "new app version: ${BUILD_NUMBER}"
-          git push
-
-      - name: Zip elasticbeanstalk/docker-compose.yml
-        run: zip deploy.zip elasticbeanstalk/docker-compose.yml
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.4.3
         with:
-          aws_access_key: ${{secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{secrets.AWS_SECRET_ACCESS_KEY }}
-          region: eu-west-1
-          environment_name: Springbootreactfullstack-env
-          application_name: springboot-react-fullstack
-          deployment_package: deploy.zip
-          version_label: ${{steps.build-number.outputs.BUILD_NUMBER}}
-          version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions
-          wait_for_deployment: 60
-    
-      
+          java-version: 1.15
+      - name: Setup PostgreSQL
+        uses: Harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863
+        with:
+          postgresql version: 13.1
+          postgresql db: amigoscode 
+          postgresql user: postgres
+          postgresql password: password      
+      - name: Maven Clean Package
+        run: |
+          ./mvnw clean package -P build-frontend
           
