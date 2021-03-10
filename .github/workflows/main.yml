@@ -51,6 +51,7 @@ jobs:
       - name: Commit dev docker-compose.yaml
         if: github.ref == 'refs/heads/master'
         run: |
+          echo ${{ github.ref }}
           date > generated.txt
           git config user.name github-actions
           git config user.email github-actions@github.com
