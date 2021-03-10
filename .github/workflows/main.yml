@@ -24,19 +24,30 @@ jobs:
           postgresql version: 13.1
           postgresql db: amigoscode 
           postgresql user: postgres
-          postgresql password: password
-      
-      # Step that does that actual cache save and restore
-      - uses: actions/cache@v1
+          postgresql password: password      
+      - name: Cache
+        uses: actions/cache@v2.1.4
         with:
+          # A list of files, directories, and wildcard patterns to cache and restore
           path: ~/.m2/repository
+          # An explicit key for restoring and saving the cache
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+          restore-keys: ${{ runner.os }}-maven-
+          
+      - name: Docker Login
+        uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a
+        with:
+          username: amigoscode
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      
+      - name: Build Number
+        id: build-number
+        run: echo "::set-output name=BUILD_NUMBER::$(date '+%-d.%-m.%Y.%-H.%-M.%-S')"
         
       - name: Maven Clean Package
         run: |
-          ./mvnw clean package -P build-frontend
+          ./mvnw clean package -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
       
       
           
