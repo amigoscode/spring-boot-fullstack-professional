@@ -7,12 +7,17 @@ on:
   workflow_dispatch:
 
 env:
+  # Postgres
   POSTGRESQL_VERSION: 13.1
   POSTGRESQL_DB: amigoscode
   POSTGRESQL_USER: postgres
   POSTGRESQL_PASSWORD: password
+  # Java
   JAVA_VERSION: 1.15
+  # DockerHub
   DOCKER_HUB_USERNAME: amigoscode
+  # AWS & Elastic Bean Stalk
+  AWS_REGION: eu-west-1
   EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
   EB_APPLICATION_NAME: springboot-react-fullstack
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
