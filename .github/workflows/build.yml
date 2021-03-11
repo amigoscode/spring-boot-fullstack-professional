@@ -31,7 +31,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: "hello"
+          text: "http://springbootreactfullstack-env.eba-3imjbkem.eu-west-1.elasticbeanstalk.com\n${{ job.status }}' === 'success' ? ':white_check_mark:' Application deployed' : ':x:'"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always()
