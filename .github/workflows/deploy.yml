@@ -30,8 +30,8 @@ jobs:
         uses: Harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863
         with:
           postgresql version: ${{ env.POSTGRESQL_VERSION }}
-          postgresql db: ${{ env.POSTGRESQL_VERSION }}
-          postgresql user: ${{ env.POSTGRESQL_VERSION }}
+          postgresql db: ${{ env.POSTGRESQL_DB }}
+          postgresql user: ${{ env.POSTGRESQL_USER }}
           postgresql password: ${{ env.POSTGRESQL_PASSWORD }}
 
       - name: Build Number
