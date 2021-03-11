@@ -12,8 +12,6 @@ env:
   POSTGRESQL_USER: postgres
   POSTGRESQL_PASSWORD: password
   JAVA_VERSION: 1.15
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  SLACK_WEHOOK_CHANNEL: '#software-builds-deployments'
 
 jobs:
   build:
@@ -29,11 +27,15 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - uses: act10ns/slack@v1
-        with:
-          status: starting
-          channel:  ${{ env.SLACK_WEHOOK_CHANNEL }}
-        if: always()
+      - uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+            text: "hello"
+            # selectable (default: repo,message)
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          if: always()
 
       - uses: actions/checkout@v2
 
@@ -44,9 +46,10 @@ jobs:
       - name: Maven Clean Package
         run: |
           ./mvnw --no-transfer-progress clean package -P build-frontend
-      - uses: act10ns/slack@v1
+      - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          steps: ${{ toJson(steps) }}
-          channel: ${{ env.SLACK_WEHOOK_CHANNEL }}
-        if: always()
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
