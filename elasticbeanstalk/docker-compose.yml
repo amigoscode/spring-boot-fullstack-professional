@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    image: "amigoscode/springboot-react-fullstack:11.3.2021.22.16.56"
+    image: "amigoscode/springboot-react-fullstack:11.3.2021.22.38.21"
     ports:
       - "80:8080"
     restart: "always"
