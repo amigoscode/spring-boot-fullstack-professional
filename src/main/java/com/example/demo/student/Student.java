@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table
 public class Student {
+
     @Id
     @SequenceGenerator(
             name = "student_sequence",
