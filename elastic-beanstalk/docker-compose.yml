@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  backend:
+    image: "hami0334/springboot-react-fullstack:latest"
+    ports: 
+      - "80:8080"   # the - represents an element in an array
+    restart: "always"
+    
