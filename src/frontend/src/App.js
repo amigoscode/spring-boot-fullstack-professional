@@ -72,8 +72,8 @@ function App() {
     if (students.length <= 0) {
       return <Empty />;
     }
-    return <Table dataSource={students} columns={cols} bordered title={() => 'Students'} pagination={{ pageSize: 50 }}
-      scroll={{ y: 240 }} rowKey={(student) => `student_${student.id}`} />;
+    return <Table dataSource={students} columns={cols} bordered title={() => 'Students'} pagination={{ pageSize: 10 }}
+      scroll={{ y: 550 }} rowKey={(student) => `student_${student.id}`} />;
   }
 
   return <Layout style={{ minHeight: '100vh' }}>
