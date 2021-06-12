@@ -42,3 +42,10 @@
     transform: rotate(360deg);
   }
 }
+
+.site-badge-count-4 .ant-badge-count {
+  margin-left: 10px;
+  color: #999;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
+}
