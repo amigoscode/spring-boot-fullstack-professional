@@ -26,7 +26,7 @@ import {
 import StudentDrawerForm from "./StudentDrawerForm";
 
 import './App.css';
-import { successNotification } from './Notification';
+import { successNotification, errorNotification } from './Notification';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -48,7 +48,10 @@ const removeStudent = (studentId, callback) =>
     .then(() => {
       successNotification('Student Deleted', `Successfully deleted student ${studentId}`);
       callback();
-    });
+    }).catch(e => 
+      e.response.json()
+        .then(response => errorNotification('ERROR', `[STATUS CODE: ${response.status}] [${response.message}] [${response.error}]`))
+    );
 
 
 const cols = fetchStudents => [
@@ -110,8 +113,13 @@ function App() {
     .then(data => {
       console.log(data);
       setStudents(data);
-      setFetchingData(false);
-    });
+    }).catch(e => {
+      console.log(e.response);
+      e.response.json().then(res => {
+        console.log(res);
+        errorNotification('There was an error', `${res.message} [Status Code: ${res.status}] [${res.error}]`);
+      });
+    }).finally(() => setFetchingData(false));
 
   useEffect(() => {
     console.log('Component is mounted');
@@ -123,7 +131,19 @@ function App() {
       return <Spin indicator={antIcon} />;
     }
     if (students.length <= 0) {
-      return <Empty />;
+      return (
+        <>
+          <Button
+            onClick={() => setShowDrawer(!showDrawer)} type='primary' shape='round' icon={<PlusOutlined/>} size='medium'>
+            Add New Student
+          </Button>
+          <StudentDrawerForm
+            showDrawer={showDrawer}
+            setShowDrawer={setShowDrawer}
+            fetchStudents={fetchStudents}/>
+          <Empty />
+        </>
+      );
     }
     return ( 
       <>

@@ -30,9 +30,11 @@ function StudentDrawerForm({ showDrawer, setShowDrawer, fetchStudents }) {
 				onClose();
 				successNotification('Student Successfully Added', `${student.name} was added.`);
 				fetchStudents();
-			}).catch((e) => console.log(e))
-			.finally(() => setSubmitting(false));
-	};
+			}).catch(e => e.response.json()
+				.then(response => errorNotification('ERROR', `[STATUS CODE: ${response.status}] [${response.error}] [${response.message}]`, 'bottomLeft'))
+			).finally(() => setSubmitting(false));
+
+		};
 
 	const onFinishedFailed = errorInfo => alert(JSON.stringify(errorInfo, null, 2));
 

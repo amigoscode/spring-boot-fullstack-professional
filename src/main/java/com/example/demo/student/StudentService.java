@@ -3,7 +3,12 @@ package com.example.demo.student;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.student.exception.BadRequestException;
+import com.example.demo.student.exception.StudentNotFoundException;
 
 @Service
 public class StudentService {
@@ -20,12 +25,22 @@ public class StudentService {
     }
 
     public void addStudent(Student student) {
-        // check if email is taken
+        Example<Student> studentExample = Example.of(student,
+                ExampleMatcher.matchingAny().withIgnorePaths("gender", "name").withIgnoreCase("email"));
+
+        if (studentRepo.exists(studentExample)) {
+            throw new BadRequestException("Email " + student.getEmail() + " is taken");
+        }
+
         studentRepo.save(student);
     }
 
-    public void deleteStudent(Long id) {
-        studentRepo.deleteById(id);
+    public void deleteStudent(Long studentId) {
+        if (!studentRepo.existsById(studentId)) {
+            throw new StudentNotFoundException("No student has ID=" + studentId);
+        }
+
+        studentRepo.deleteById(studentId);
     }
 
 }
