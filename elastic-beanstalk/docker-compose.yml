@@ -5,4 +5,6 @@ services:
     ports: 
       - "80:8080"   # the - represents an element in an array
     restart: "always"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
     
