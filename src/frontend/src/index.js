@@ -1,20 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-<<<<<<< HEAD
 import App from './App';  // <App /> is the mounting point for our application
-=======
-import App from './App';
->>>>>>> main
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-<<<<<<< HEAD
     <App /> 
-=======
-    <App />
->>>>>>> main
   </React.StrictMode>,
   document.getElementById('root')
 );
