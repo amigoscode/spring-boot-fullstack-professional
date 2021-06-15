@@ -46,6 +46,22 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -173,7 +189,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>hami0334/${app.image.name}:latest</image>
+										<image>amigoscode/${app.image.name}:latest</image>
 									</to>
 								</configuration>
 								<goals>
@@ -256,5 +272,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

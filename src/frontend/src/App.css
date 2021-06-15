@@ -13,6 +13,20 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+<<<<<<< HEAD
+=======
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.site-badge-count-4 .ant-badge-count {
+  margin-left: 10px;
+  color: #999;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
+}
+
+>>>>>>> main
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -42,6 +56,7 @@
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
 
 .site-badge-count-4 .ant-badge-count {
   margin-left: 10px;
@@ -49,3 +64,5 @@
   background-color: #fff;
   box-shadow: 0 0 0 1px #d9d9d9 inset;
 }
+=======
+>>>>>>> main

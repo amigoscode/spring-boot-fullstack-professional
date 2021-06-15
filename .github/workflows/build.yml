@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+  POSTGRESQL_VERSION: 13.1
+  POSTGRESQL_DB: amigoscode
+  POSTGRESQL_USER: postgres
+  POSTGRESQL_PASSWORD: password
+  JAVA_VERSION: 1.15
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13.1
+        env:
+          POSTGRES_DB: ${{ env.POSTGRESQL_DB }}
+          POSTGRES_USER: ${{ env.POSTGRESQL_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRESQL_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1.4.3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: Maven Clean Package
+        run: |
+          ./mvnw --no-transfer-progress clean package -P build-frontend
+          

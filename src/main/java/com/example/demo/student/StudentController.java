@@ -28,7 +28,7 @@ public class StudentController {
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
-    
+
     @PostMapping
     public void addStudent(@Valid @RequestBody Student student) {
         studentService.addStudent(student);
