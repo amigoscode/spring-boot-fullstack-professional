@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:13.1
+        image: ${{ env.POSTGRESQL_VERSION }}
         env:
           POSTGRES_DB: ${{ env.POSTGRESQL_DB }}
           POSTGRES_USER: ${{ env.POSTGRESQL_USER }}
@@ -32,6 +32,7 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
       - name: Maven Clean Package
+      #--no-transfer-progess prevents the loggig of artifact downloads
         run: |
-          ./mvnw --no-transfer-progress clean package -P build-frontend
+          ./mvnw --no-transfer-progress clean package -P build-frontend 
           

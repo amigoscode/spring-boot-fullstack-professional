@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 
-  workflow_dispatch:
+  workflow_dispatch:  # we can also deploy this workflow using the UI
 
 env:
   # Postgres
@@ -15,12 +15,12 @@ env:
   # Java
   JAVA_VERSION: 1.15
   # DockerHub
-  DOCKER_HUB_USERNAME: amigoscode
+  DOCKER_HUB_USERNAME: hami0334
   # AWS & Elastic Bean Stalk
-  AWS_REGION: eu-west-1
+  AWS_REGION: us-east-2
   EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
-  EB_APPLICATION_NAME: springboot-react-fullstack
-  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
+  EB_APPLICATION_NAME: spring-boot-react-fullstack
+  EB_DEPLOYMENT_PACKAGE: elastic-beanstalk/docker-compose.yml
 
 jobs:
   deploy:
@@ -71,18 +71,18 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':white_check_mark: pushed amigoscode/springboot-react-fullstack:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/amigoscode/springboot-react-fullstack'
+          text: ':white_check_mark: pushed amigoscode/springboot-react-fullstack:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/hami0334/springboot-react-fullstack'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update and commit app version in docker-compose.yaml
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
-          sed -i -E 's_(amigoscode/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' elasticbeanstalk/docker-compose.yml
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          echo -e "Current elastic-beanstalk/docker-compose.yml\n$(cat elastic-beanstalk/docker-compose.yml)"
+          sed -i -E 's_(hami0334/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' elastic-beanstalk/docker-compose.yml #auto-update docker-compose file
+          echo -e "Current elastic-beanstalk/docker-compose.yml\n$(cat elastic-beanstalk/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add elasticbeanstalk/docker-compose.yml
+          git add elastic-beanstalk/docker-compose.yml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git push
 
@@ -104,12 +104,12 @@ jobs:
           deployment_package: ${{ env.EB_DEPLOYMENT_PACKAGE }}
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}
-          wait_for_deployment: 60
+          wait_for_deployment: 60 # wait for 1 minute to ensure that deployment occurs
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':tada: :arrow_right: http://springbootreactfullstack-env.eba-3imjbkem.eu-west-1.elasticbeanstalk.com'
+          text: ':tada: :arrow_right: http://springbootreactfullstack-env.eba-p2hfspd9.us-east-2.elasticbeanstalk.com/'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+        if: always()  # this uses always triggers even if the build fails 

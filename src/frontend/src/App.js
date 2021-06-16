@@ -13,7 +13,8 @@ import {
   Avatar,
   Radio,
   Popconfirm,
-  Image
+  Image,
+  Divider
 } from 'antd';
 import {
   DesktopOutlined,
@@ -212,6 +213,13 @@ function App() {
           height={60}
           src={'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.fineartamerica.com%2Fimages%2Fartworkimages%2Fmediumlarge%2F1%2Fmale-baltimore-oriole-tasting-an-orange-jim-hughes.jpg&f=1&nofb=1'}
         />
+        <Divider>
+          <a 
+            target="_blank"
+            rel="noreferrer"
+            href="https://amigoscode.com/p/full-stack-spring-boot-react">
+            Click Here to Access Fullstack Spring Boot & React for Professionals</a>
+        </Divider>
       </Footer>
     </Layout>
   </Layout>
