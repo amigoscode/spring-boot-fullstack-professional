@@ -20,7 +20,7 @@ env:
   AWS_REGION: us-east-2
   EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
   EB_APPLICATION_NAME: spring-boot-react-fullstack
-  EB_DEPLOYMENT_PACKAGE: elastic-beanstalk/docker-compose.yml
+  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
 
 jobs:
   deploy:
@@ -77,12 +77,12 @@ jobs:
       - name: Update and commit app version in docker-compose.yaml
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current elastic-beanstalk/docker-compose.yml\n$(cat elastic-beanstalk/docker-compose.yml)"
-          sed -i -E 's_(hami0334/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' elastic-beanstalk/docker-compose.yml #auto-update docker-compose file
-          echo -e "Current elastic-beanstalk/docker-compose.yml\n$(cat elastic-beanstalk/docker-compose.yml)"
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          sed -i -E 's_(hami0334/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' elasticbeanstalk/docker-compose.yml #auto-update docker-compose file
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add elastic-beanstalk/docker-compose.yml
+          git add elasticbeanstalk/docker-compose.yml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git push
 
