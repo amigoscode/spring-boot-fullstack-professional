@@ -2,7 +2,6 @@ package com.example.demo.integration;
 
 import com.example.demo.student.Gender;
 import com.example.demo.student.Student;
-import com.example.demo.student.StudentController;
 import com.example.demo.student.StudentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
