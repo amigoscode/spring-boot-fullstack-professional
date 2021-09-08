@@ -11,7 +11,7 @@ import {
     Badge,
     Tag,
     Avatar,
-    Radio, Popconfirm, Image, Divider
+    Radio, Popconfirm
 } from 'antd';
 
 import {
@@ -24,6 +24,7 @@ import {
     PlusOutlined
 } from '@ant-design/icons';
 import StudentDrawerForm from "./StudentDrawerForm";
+import StudentDrawerEditForm from "./StudentDrawerEditForm";
 
 import './App.css';
 import {errorNotification, successNotification} from "./Notification";
@@ -61,58 +62,14 @@ const removeStudent = (studentId, callback) => {
     })
 }
 
-const columns = fetchStudents => [
-    {
-        title: '',
-        dataIndex: 'avatar',
-        key: 'avatar',
-        render: (text, student) =>
-            <TheAvatar name={student.name}/>
-    },
-    {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-    },
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
-    },
-    {
-        title: 'Gender',
-        dataIndex: 'gender',
-        key: 'gender',
-    },
-    {
-        title: 'Actions',
-        key: 'actions',
-        render: (text, student) =>
-            <Radio.Group>
-                <Popconfirm
-                    placement='topRight'
-                    title={`Are you sure to delete ${student.name}`}
-                    onConfirm={() => removeStudent(student.id, fetchStudents)}
-                    okText='Yes'
-                    cancelText='No'>
-                    <Radio.Button value="small">Delete</Radio.Button>
-                </Popconfirm>
-                <Radio.Button onClick={() => alert("TODO: Implement edit student")} value="small">Edit</Radio.Button>
-            </Radio.Group>
-    }
-];
-
 const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
 function App() {
     const [students, setStudents] = useState([]);
+    const [student, setStudent] = useState("");
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [showEditDrawer, setShowEditDrawer] = useState(false);
     const [showDrawer, setShowDrawer] = useState(false);
 
     const fetchStudents = () =>
@@ -121,7 +78,7 @@ function App() {
             .then(data => {
                 console.log(data);
                 setStudents(data);
-            }).catch(err => {
+        }).catch(err => {
                 console.log(err.response)
                 err.response.json().then(res => {
                     console.log(res);
@@ -130,12 +87,12 @@ function App() {
                         `${res.message} [${res.status}] [${res.error}]`
                     )
                 });
-            }).finally(() => setFetching(false))
+        }).finally(() => setFetching(false));
 
-    useEffect(() => {
-        console.log("component is mounted");
-        fetchStudents();
-    }, []);
+        useEffect(() => {
+            console.log("component is mounted");
+            fetchStudents();
+        }, []);
 
     const renderStudents = () => {
         if (fetching) {
@@ -148,6 +105,12 @@ function App() {
                     type="primary" shape="round" icon={<PlusOutlined/>} size="small">
                     Add New Student
                 </Button>
+                <StudentDrawerEditForm
+                    showDrawer={showEditDrawer}
+                    setShowDrawer={setShowEditDrawer}
+                    student={student}
+                    fetchStudents={fetchStudents}
+                />
                 <StudentDrawerForm
                     showDrawer={showDrawer}
                     setShowDrawer={setShowDrawer}
@@ -157,6 +120,12 @@ function App() {
             </>
         }
         return <>
+            <StudentDrawerEditForm
+                showDrawer={showEditDrawer}
+                setShowDrawer={setShowEditDrawer}
+                student={student}
+                fetchStudents={fetchStudents}
+            />
             <StudentDrawerForm
                 showDrawer={showDrawer}
                 setShowDrawer={setShowDrawer}
@@ -184,6 +153,57 @@ function App() {
             />
         </>
     }
+
+    const columns = fetchStudents => [
+        {
+            title: '',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (text, student) =>
+                <TheAvatar name={student.name}/>
+        },
+        {
+            title: 'Id',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'Gender',
+            dataIndex: 'gender',
+            key: 'gender',
+        },
+        {
+            title: 'Actions',
+            key: 'actions',
+            render: (text, student) =>
+                <Radio.Group>
+                    <Popconfirm
+                        placement='topRight'
+                        title={`Are you sure to delete ${student.name}`}
+                        onConfirm={() => removeStudent(student.id, fetchStudents)}
+                        okText='Yes'
+                        cancelText='No'>
+                        <Radio.Button value="small">Delete</Radio.Button>
+                    </Popconfirm>
+                    <Radio.Button onClick={() =>
+                        setShowEditDrawer(!showEditDrawer)
+                        + setStudent(student)
+                        + console.log("Student ID: ", student.id)}
+                                  value="small">Edit
+                    </Radio.Button>
+                </Radio.Group>
+        }
+    ];
 
     return <Layout style={{minHeight: '100vh'}}>
         <Sider collapsible collapsed={collapsed}
@@ -221,20 +241,7 @@ function App() {
                     {renderStudents()}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>
-                <Image
-                    width={75}
-                    src="https://user-images.githubusercontent.com/40702606/110871298-0ab98d00-82c6-11eb-88e8-20c4d5c9ded5.png"
-                />
-                <Divider>
-                    <a
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href="https://amigoscode.com/p/full-stack-spring-boot-react">
-                        Click here to access Fullstack Spring Boot & React for professionals
-                    </a>
-                </Divider>
-            </Footer>
+            <Footer style={{textAlign: 'center'}}>By Amigoscode</Footer>
         </Layout>
     </Layout>
 }
