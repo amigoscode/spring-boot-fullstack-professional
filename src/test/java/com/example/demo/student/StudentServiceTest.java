@@ -18,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
 
@@ -39,7 +41,7 @@ class StudentServiceTest {
         List<Student> studentList = Arrays.asList(
                 new Student("amir", "fathiamir37@gmail.com", Gender.MALE),
                 new Student("sara", "saraamir37@gmail.com", Gender.FEMALE));
-        Mockito.when(studentRepository.findAll()).thenReturn(studentList);
+        when(studentRepository.findAll()).thenReturn(studentList);
 
         // Act
         List<Student> allStudents = underTest.getAllStudents();
@@ -70,7 +72,7 @@ class StudentServiceTest {
     @Test
     void shouldGetExceptionWhenAddingStudent() {
 
-        Mockito.when(studentRepository.selectExistsEmail(ArgumentMatchers.any())).thenReturn(true);
+        when(studentRepository.selectExistsEmail(ArgumentMatchers.any())).thenReturn(true);
 
         Assertions.assertThatThrownBy(() -> underTest.addStudent(student))
                 .isInstanceOfAny(BadRequestException.class);
@@ -79,17 +81,20 @@ class StudentServiceTest {
 
     @Test
     void shouldBeAbleToDeleteStudent() {
+            Long studentId = 1L;
 
-        Mockito.when(studentRepository.existsById(ArgumentMatchers.any())).thenReturn(false);
-//        underTest.deleteStudent(123L);
-        Mockito.verify(studentRepository).deleteById(123L);
+            when(studentRepository.existsById(studentId)).thenReturn(true);
+
+            underTest.deleteStudent(studentId);
+
+            verify(studentRepository, times(1)).deleteById(studentId);
+
     }
 
     @Test
     void shouldGetExceptionWhenDeleteStudent() {
 
-        Mockito.
-                when(studentRepository
+        when(studentRepository
                         .existsById(ArgumentMatchers.any()))
                 .thenReturn(false);
 
